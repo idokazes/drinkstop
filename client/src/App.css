@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+
+  min-height: 100vh;
+
+  main {
+    padding-top: 20px;
+    flex: 1;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),
+      url("bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    backdrop-filter: opacity(75%);
+  }
+
+  h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 24px;
+    font-size: 152px;
+    color: white;
+    text-shadow: rgba(0, 0, 0, 1) 11px 7px 15px;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-text {
+  font-size: 24px;
+  color: white;
+  text-shadow: rgba(0, 0, 0, 1) 11px 7px 15px;
+}
+
+h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 33px !important;
+}
