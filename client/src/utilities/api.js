@@ -1,11 +1,19 @@
 const { BASE_URL, JWT_TOKEN_KEY } = require("../constants");
 
+const getJwtToken = () => {
+  const token = localStorage.getItem(JWT_TOKEN_KEY);
+  if (!token) {
+    throw new Error("Your token has expired, please login");
+  }
+  return token;
+};
+
 const saveCart = (cart) => {
   fetch(BASE_URL + "/users/cart", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      authorization: localStorage.getItem(JWT_TOKEN_KEY),
+      authorization: getJwtToken(),
     },
     body: JSON.stringify(cart),
   });
@@ -16,7 +24,7 @@ const checkout = (cart) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      authorization: localStorage.getItem(JWT_TOKEN_KEY),
+      authorization: getJwtToken(),
     },
     body: JSON.stringify(cart),
   });
@@ -25,9 +33,47 @@ const checkout = (cart) => {
 const getOrders = () => {
   return fetch(BASE_URL + "/orders", {
     headers: {
-      authorization: localStorage.getItem(JWT_TOKEN_KEY),
+      authorization: getJwtToken(),
     },
   }).then((res) => res.json());
 };
 
-export const api = { saveCart, checkout, getOrders };
+const addProduct = (product) => {
+  return fetch(BASE_URL + "/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: getJwtToken(),
+    },
+    body: JSON.stringify(product),
+  });
+};
+
+const editProduct = (productId, data) => {
+  return fetch(BASE_URL + "/products/" + productId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: getJwtToken(),
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const deleteProduct = (productId) => {
+  return fetch(BASE_URL + "/products/" + productId, {
+    method: "DELETE",
+    headers: {
+      authorization: getJwtToken(),
+    },
+  });
+};
+
+export const api = {
+  saveCart,
+  checkout,
+  getOrders,
+  addProduct,
+  editProduct,
+  deleteProduct,
+};

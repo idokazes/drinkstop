@@ -11,15 +11,32 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
     _id: { $in: req.body.map((item) => item.productId) },
   });
 
+  const outOfStockProducts = [];
+
   const order = {
     userId: req.user._id,
-    items: req.body.map((item) => ({
-      productId: item.productId,
-      quantity: item.quantity,
-      price: cartProducts.find((product) => product._id == item.productId)
-        .price,
-    })),
+    items: req.body.map((item) => {
+      const cartProduct = cartProducts.find(
+        (product) => product._id == item.productId
+      );
+
+      if (cartProduct.stock < item.quantity) {
+        outOfStockProducts.push(cartProduct.name);
+      }
+
+      return {
+        productId: item.productId,
+        quantity: item.quantity,
+        price: cartProduct.price,
+      };
+    }),
   };
+
+  if (outOfStockProducts.length > 0) {
+    return res
+      .status(400)
+      .send(`Out of stock products: ${outOfStockProducts.join(", ")}`);
+  }
 
   const result = orderValidationSchema.validate(order);
   if (result.error) {

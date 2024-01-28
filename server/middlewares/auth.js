@@ -7,16 +7,24 @@ const verifyAuth = (req, res, next) => {
   }
 
   try {
-    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-    req.user = verified;
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decodedToken;
     next();
   } catch (err) {
-    res.status(400).send("Invalid Token");
+    console.log("err", err);
+    res.status(401).send("Invalid Token");
   }
+};
+
+const verifyAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(401).send("Access Denied");
+  }
+  next();
 };
 
 const signJwt = (payload) => {
   return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "4h" });
 };
 
-module.exports = { verifyAuth, signJwt };
+module.exports = { verifyAuth, signJwt, verifyAdmin };

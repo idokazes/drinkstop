@@ -22,10 +22,16 @@ function App() {
   const [products, setProducts] = useState([]);
   const categories = [...new Set(products.map((product) => product.type))];
 
-  useEffect(() => {
+  const isAdmin = user && user.role === "admin";
+
+  function fetchProducts() {
     fetch(BASE_URL + "/products")
       .then((res) => res.json())
       .then((data) => setProducts(data));
+  }
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   const addToCart = (productId) => {
@@ -65,8 +71,9 @@ function App() {
         .then((response) => {
           if (response.ok) {
             return response.json();
+          } else if (response.status === 401) {
+            throw new Error("Authentication failed.");
           }
-          throw new Error("Authentication failed.");
         })
         .then((data) => {
           localStorage.setItem(JWT_TOKEN_KEY, data.jwtToken);
@@ -75,8 +82,10 @@ function App() {
         })
         .catch((error) => {
           console.error(error);
-          setUser(null);
-          localStorage.removeItem(JWT_TOKEN_KEY);
+          if (error.message === "Authentication failed.") {
+            setUser(null);
+            localStorage.removeItem(JWT_TOKEN_KEY);
+          }
         });
     }
   }, []);
@@ -99,13 +108,21 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/manage-users" element={<ManageUsers />} />
-          <Route
-            path="/manage-products"
-            element={
-              <ManageProducts products={products} categories={categories} />
-            }
-          />
+          {isAdmin && (
+            <>
+              <Route path="/manage-users" element={<ManageUsers />} />
+              <Route
+                path="/manage-products"
+                element={
+                  <ManageProducts
+                    products={products}
+                    categories={categories}
+                    fetchProducts={fetchProducts}
+                  />
+                }
+              />
+            </>
+          )}
           <Route path="/orders" element={<Orders products={products} />} />
           <Route
             path="/cart"

@@ -1,4 +1,29 @@
+const Joi = require("joi");
 const mongoose = require("mongoose");
+
+const CATEGORIES = [
+  "Beer",
+  "Wine",
+  "Whiskey",
+  "Gin",
+  "Vodka",
+  "Rum",
+  "Tequila",
+  "Other",
+];
+
+const productValidationSchema = Joi.object({
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  price: Joi.number().required().min(1),
+  alcoholPercentage: Joi.number().required().min(1),
+  volume: Joi.number().required().min(1),
+  stock: Joi.number().required().min(1),
+  image: Joi.string().required(),
+  type: Joi.string()
+    .required()
+    .valid(...CATEGORIES),
+});
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -14,22 +39,13 @@ const productSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: [
-      "Beer",
-      "Wine",
-      "Whiskey",
-      "Gin",
-      "Vodka",
-      "Rum",
-      "Tequila",
-      "Other",
-    ],
+    enum: CATEGORIES,
   },
 });
 
 const ProductModel = mongoose.model("Products", productSchema);
 
-module.exports = { ProductModel };
+module.exports = { ProductModel, productValidationSchema };
 
 const exampleProducts = [
   {
@@ -128,10 +144,12 @@ const exampleProducts = [
 
 // ProductModel.insertMany(exampleProducts);
 async function start() {
-  const greyGoose = await ProductModel.findOne({ name: "Grey Goose Vodka" });
-  greyGoose.image =
-    "http://stevemody.com/wp-content/uploads/2020/05/Grey-Goose-1.png";
-  await greyGoose.save();
+  // const greyGoose = await ProductModel.findOne({ name: "Grey Goose Vodka" });
+  // greyGoose.image =
+  //   "http://stevemody.com/wp-content/uploads/2020/05/Grey-Goose-1.png";
+  // await greyGoose.save();
+
+  await ProductModel.create(exampleProducts[1]);
 }
 
 // start();

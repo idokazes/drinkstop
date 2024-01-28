@@ -10,7 +10,7 @@ export const CategoriesSelect = ({
     <Form.Select
       onChange={(e) => setSelectedCategory(e.target.value)}
       value={selectedCategory}
-      name="category"
+      name="type"
     >
       <option value="">Choose category</option>
       {categories.map((category) => (

@@ -1,6 +1,6 @@
 import { Button } from "../../components/Button/Button";
 import { api } from "../../utilities/api";
-import { toastSuccess } from "../../utilities/toast";
+import { toastError, toastSuccess } from "../../utilities/toast";
 import "./Cart.css";
 
 export const Cart = ({ cart, products, removeFromCart, setCart }) => {
@@ -14,12 +14,21 @@ export const Cart = ({ cart, products, removeFromCart, setCart }) => {
     : "loading...";
 
   const handleCheckout = async () => {
-    const result = await api.checkout(cart);
-    if (result.ok) {
-      toastSuccess("Successfully checked out.");
-      setCart([]);
+    try {
+      const result = await api.checkout(cart);
+      if (result.ok) {
+        toastSuccess("Successfully checked out.");
+        setCart([]);
+      } else {
+        const errorMessages = await result.text();
+        throw new Error(errorMessages);
+      }
+    } catch (error) {
+      console.log(error);
+      toastError(error.message);
     }
   };
+
   return (
     <div id="Cart">
       <h1>Cart</h1>
@@ -37,16 +46,11 @@ export const Cart = ({ cart, products, removeFromCart, setCart }) => {
               <h3>{product.name}</h3>
               <p>Type: {product.type}</p>
             </div>
-            <div style={{ width: "250px" }}>
-              <div style={{ display: "flex" }}>
-                <div>
-                  <p className="price">
-                    {product.price}$ x {quantity}
-                  </p>
-                </div>
-                <div>
-                  <p className="price"> = {product.price * quantity}$</p>
-                </div>
+            <div style={{ width: "350px" }}>
+              <div>
+                <p className="price">
+                  {product.price}$ x {quantity} = {product.price * quantity}$
+                </p>
               </div>
               <Button onClick={() => removeFromCart(product._id)}>
                 Delete
