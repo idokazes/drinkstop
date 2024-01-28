@@ -28,10 +28,10 @@
       object-fit: contain;
       border-radius: 5px;
     }
-    /*
-    .product-name {
-      font-size: 1.5rem;
-      font-weight: 600;
+
+    .product-description {
+      font-size: 1rem;
+      font-weight: 700;
       margin: 0.5rem 0;
     }
 
@@ -41,8 +41,10 @@
       margin: 0.5rem 0;
     }
 
-    .product-description {
-      font-size: 1rem;
+    /*
+    .product-name {
+      font-size: 1.5rem;
+      font-weight: 600;
       margin: 0.5rem 0;
     }
 

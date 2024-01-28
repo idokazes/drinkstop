@@ -5,3 +5,7 @@
   text-shadow: rgba(0, 0, 0, 1) 11px 7px 15px;
   text-decoration: none;
 }
+
+.nav-link:hover {
+  text-decoration: underline;
+}

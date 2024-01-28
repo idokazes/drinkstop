@@ -15,6 +15,7 @@
     background-repeat: no-repeat;
     background-position: center;
     backdrop-filter: opacity(75%);
+    background-attachment: fixed;
   }
 
   h1 {
@@ -24,6 +25,10 @@
     color: white;
     text-shadow: rgba(0, 0, 0, 1) 11px 7px 15px;
   }
+}
+
+p {
+  margin: 0 !important;
 }
 
 .center {
@@ -41,4 +46,42 @@
 h3 {
   font-family: "Bebas Neue", sans-serif;
   font-size: 33px !important;
+}
+
+.bg-color {
+  background-color: rgba(245, 222, 179, 0.742) !important;
+}
+
+.row-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #000000b6;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 15px;
+  font-size: 24px;
+  background-color: rgb(245 222 179 / 70%);
+  width: 80%;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 5px;
+  }
+  .product-details {
+    flex: 1;
+  }
+
+  .price {
+    padding: 10px 0;
+  }
 }

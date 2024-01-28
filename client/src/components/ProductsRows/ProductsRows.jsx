@@ -1,7 +1,7 @@
+import { Button } from "../Button/Button";
 import "./ProductsRows.css";
-import Button from "react-bootstrap/Button";
 
-export const ProductsRows = ({ products }) => {
+export const ProductsRows = ({ products, addToCart }) => {
   return (
     <div id="ProductsRows">
       {products.map((product) => (
@@ -13,15 +13,13 @@ export const ProductsRows = ({ products }) => {
           />
           <div className="product-details">
             <h3>{product.name}</h3>
-            <p>{product.description}</p>
+            <p className="product-description">{product.description}</p>
             <p>Type: {product.type}</p>
             <p>Alcohol Percentage: {product.alcoholPercentage}</p>
           </div>
           <div>
             <p className="price">{product.price}$</p>
-            <Button variant="dark" size="lg">
-              Add to cart
-            </Button>
+            <Button onClick={() => addToCart(product._id)}>Add to cart</Button>
           </div>
         </div>
       ))}

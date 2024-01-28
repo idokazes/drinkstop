@@ -7,16 +7,20 @@ import { ProductsRows } from "../../components/ProductsRows/ProductsRows";
 import "./Home.css";
 import InputGroup from "react-bootstrap/InputGroup";
 
-export const Home = () => {
-  const [products, setProducts] = useState([]);
+export const Home = ({ products, addToCart }) => {
   const [isGrid, setIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  console.log("searchValue", searchValue);
 
-  useEffect(() => {
-    fetch(BASE_URL + "/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  }, []);
+  const filteredProducts = products.filter((product) => {
+    return (
+      product.name.toLowerCase().includes(searchValue.toLowerCase()) &&
+      (selectedCategory ? product.type === selectedCategory : true)
+    );
+  });
+
+  const categories = [...new Set(products.map((product) => product.type))];
 
   return (
     <div id="home">
@@ -44,11 +48,22 @@ export const Home = () => {
             value={searchValue}
           />
         </InputGroup>
+        <Form.Select
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          value={selectedCategory}
+        >
+          <option value="">Choose category</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </Form.Select>
       </Container>
       {isGrid ? (
-        <ProductsGrid products={products} />
+        <ProductsGrid products={filteredProducts} addToCart={addToCart} />
       ) : (
-        <ProductsRows products={products} />
+        <ProductsRows products={filteredProducts} addToCart={addToCart} />
       )}
     </div>
   );

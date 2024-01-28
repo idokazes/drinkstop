@@ -1,22 +1,20 @@
+import { Button } from "../Button/Button";
 import "./ProductsGrid.css";
-import Button from "react-bootstrap/Button";
 
-export const ProductsGrid = ({ products }) => {
+export const ProductsGrid = ({ products, addToCart }) => {
   return (
     <div id="ProductsGrid">
       {products.map((product) => (
-        <div className="grid-item" key={product.id}>
+        <div key={product._id} className="grid-item">
           <img
             className="product-image"
             src={product.image}
             alt={product.name}
           />
           <h3>{product.name}</h3>
-          <p>{product.description}</p>
-          <p>{product.price}$</p>
-          <Button variant="dark" size="lg">
-            Add to cart
-          </Button>
+          <p className="product-description">{product.description}</p>
+          <p className="product-price">{product.price}$</p>
+          <Button onClick={() => addToCart(product._id)}>Add to cart</Button>
         </div>
       ))}
     </div>
