@@ -69,6 +69,14 @@ const deleteProduct = (productId) => {
   });
 };
 
+const getUsers = () => {
+  return fetch(BASE_URL + "/users", {
+    headers: {
+      authorization: getJwtToken(),
+    },
+  });
+};
+
 export const api = {
   saveCart,
   checkout,
@@ -76,4 +84,5 @@ export const api = {
   addProduct,
   editProduct,
   deleteProduct,
+  getUsers,
 };

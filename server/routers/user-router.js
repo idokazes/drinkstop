@@ -5,6 +5,11 @@ const { signJwt, verifyAuth } = require("../middlewares/auth");
 
 const userRouter = Router();
 
+userRouter.get("/", async (req, res) => {
+  const users = await UserModel.find({}).select("-password");
+  res.send(users);
+});
+
 userRouter.get("/refresh", verifyAuth, async (req, res) => {
   try {
     const foundUser = await UserModel.findById(req.user._id);

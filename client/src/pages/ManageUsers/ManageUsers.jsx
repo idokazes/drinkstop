@@ -1,30 +1,32 @@
+import { useEffect, useState } from "react";
 import { Button } from "../../components/Button/Button";
 import { api } from "../../utilities/api";
 import { toastSuccess } from "../../utilities/toast";
 import "./ManageUsers.css";
+import { UsersTable } from "../../components/UsersTable/UsersTable";
 
 export const ManageUsers = ({ cart, products, removeFromCart, setCart }) => {
-  return null;
-  const totalCart = products.length
-    ? cart.reduce((acc, item) => {
-        const product = products.find(
-          (product) => product._id === item.productId
-        );
-        return acc + product.price * item.quantity;
-      }, 0)
-    : "loading...";
+  const [users, setUsers] = useState([]);
 
-  const handleCheckout = async () => {
-    const result = await api.checkout(cart);
-    if (result.ok) {
-      toastSuccess("Successfully checked out.");
-      setCart([]);
+  const fetchUsers = async () => {
+    const response = await api.getUsers();
+    if (response.ok) {
+      const users = await response.json();
+      console.log("users", users);
+      setUsers(users);
     }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <div id="Cart">
-      <h1>Cart</h1>
-      {cart.map(({ productId, quantity }) => {
+      <h1>Users</h1>
+
+      <UsersTable body={users} />
+      {/* {cart.map(({ productId, quantity }) => {
         const product = products.find((product) => product._id === productId);
         if (!product) return null;
         return (
@@ -61,7 +63,7 @@ export const ManageUsers = ({ cart, products, removeFromCart, setCart }) => {
           <p className="total-cart"> Total Cart: {totalCart}$</p>
         </div>
         <Button onClick={handleCheckout}>Checkout</Button>
-      </div>
+      </div> */}
     </div>
   );
 };
