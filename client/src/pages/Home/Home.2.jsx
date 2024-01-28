@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
-import { BASE_URL } from "../../constants";
+import { useState } from "react";
 import { ProductsGrid } from "../../components/ProductsGrid/ProductsGrid";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
 import { ProductsRows } from "../../components/ProductsRows/ProductsRows";
-import "./Home.css";
 import InputGroup from "react-bootstrap/InputGroup";
-import { CategoriesSelect } from "../../components/CategoriesSelect/CategoriesSelect";
 
 export const Home = ({ products, addToCart, categories }) => {
   const [isGrid, setIsGrid] = useState(true);
@@ -47,11 +44,17 @@ export const Home = ({ products, addToCart, categories }) => {
             value={searchValue}
           />
         </InputGroup>
-        <CategoriesSelect
-          categories={categories}
-          setSelectedCategory={setSelectedCategory}
-          selectedCategory={selectedCategory}
-        />
+        <Form.Select
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          value={selectedCategory}
+        >
+          <option value="">Choose category</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </Form.Select>
       </Container>
       {isGrid ? (
         <ProductsGrid products={filteredProducts} addToCart={addToCart} />

@@ -45,5 +45,11 @@
   .accordion-button::after {
     background-color: #fff;
     border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    border-top: 6px solid white;
+    margin-top: 15px;
+    border-left: 5px solid white;
   }
 }

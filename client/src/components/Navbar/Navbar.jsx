@@ -28,6 +28,16 @@ export function Navbar({ user, setUser }) {
               <Link className="nav-link" to="/cart">
                 Cart
               </Link>
+              {user.role === "admin" && (
+                <>
+                  <Link className="nav-link" to="/manage-users">
+                    Manage Users
+                  </Link>
+                  <Link className="nav-link" to="/manage-products">
+                    Manage Products
+                  </Link>
+                </>
+              )}
               <Link
                 className="nav-link"
                 to="/"

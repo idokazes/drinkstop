@@ -1,0 +1,22 @@
+#ManageProducts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 40px;
+
+  .total-cart {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 33px;
+  }
+
+  .row-item {
+    gap: 20px;
+  }
+
+  .actions {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

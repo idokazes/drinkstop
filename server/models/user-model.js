@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     imageUrl: { type: String },
     cart: { type: [cartSchema], default: [] },
+    role: { type: String, enum: ["user", "admin"], default: "user" },
   },
   { timestamps: true }
 );
@@ -34,3 +35,10 @@ const userSchema = new mongoose.Schema(
 const UserModel = mongoose.model("Users", userSchema);
 
 module.exports = { UserModel, userValidationSchema };
+
+UserModel.find({}).then((users) => {
+  console.log(users[1]);
+
+  // users[1].role = "admin";
+  // users[1].save();
+});

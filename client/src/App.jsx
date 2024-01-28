@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
-import { Home } from "./pages/Home/Home";
+import { Home } from "./pages/Home/Home.1";
 import { About } from "./pages/About/About";
 import { Footer } from "./components/Footer/Footer";
 import { Register } from "./pages/Register/Register";
@@ -12,12 +12,15 @@ import { BASE_URL, JWT_TOKEN_KEY } from "./constants";
 import { Cart } from "./pages/Cart/Cart";
 import { api } from "./utilities/api";
 import { Orders } from "./pages/Orders/Orders";
+import { toastError } from "./utilities/toast";
+import { ManageUsers } from "./pages/ManageUsers/ManageUsers";
+import { ManageProducts } from "./pages/ManageProducts/ManageProducts";
 
 function App() {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-  console.log("cart", cart);
   const [products, setProducts] = useState([]);
+  const categories = [...new Set(products.map((product) => product.type))];
 
   useEffect(() => {
     fetch(BASE_URL + "/products")
@@ -26,6 +29,9 @@ function App() {
   }, []);
 
   const addToCart = (productId) => {
+    if (!user) {
+      return toastError("Please login to add to cart.");
+    }
     const itemInCart = cart.find((item) => item.productId === productId);
     let updatedCart;
     if (itemInCart) {
@@ -82,11 +88,24 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home products={products} addToCart={addToCart} />}
+            element={
+              <Home
+                categories={categories}
+                products={products}
+                addToCart={addToCart}
+              />
+            }
           />
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
+          <Route path="/manage-users" element={<ManageUsers />} />
+          <Route
+            path="/manage-products"
+            element={
+              <ManageProducts products={products} categories={categories} />
+            }
+          />
           <Route path="/orders" element={<Orders products={products} />} />
           <Route
             path="/cart"
