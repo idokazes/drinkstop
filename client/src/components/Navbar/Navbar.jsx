@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 import { toastSuccess } from "../../utilities/toast";
 import { JWT_TOKEN_KEY } from "../../constants";
+import { Avatar } from "../Avatar/Avatar";
 
 export function Navbar({ user, setUser }) {
   return (
@@ -56,6 +57,7 @@ export function Navbar({ user, setUser }) {
             </Link>
           )}
         </Nav>
+        <Avatar user={user} size={50} style={{}} />
       </Container>
     </BootstrapNavbar>
   );

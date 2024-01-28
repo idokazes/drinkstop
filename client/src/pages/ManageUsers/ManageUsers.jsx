@@ -25,7 +25,7 @@ export const ManageUsers = ({ cart, products, removeFromCart, setCart }) => {
     <div id="Cart">
       <h1>Users</h1>
 
-      <UsersTable body={users} />
+      <UsersTable body={users} fetchUsers={fetchUsers} />
       {/* {cart.map(({ productId, quantity }) => {
         const product = products.find((product) => product._id === productId);
         if (!product) return null;

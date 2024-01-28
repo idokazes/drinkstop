@@ -1,13 +1,24 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
-const userValidationSchema = joi.object({
-  fullName: joi.string().required().min(3),
-  email: joi.string().email().required().min(5),
+const userUpdatesValidationSchema = joi.object({
+  fullName: joi.string().optional().min(3),
+  email: joi.string().email().optional().min(5),
+  imageUrl: joi.string().optional(),
+  _id: joi.string().optional(),
+  phone: joi.string().optional().min(10),
+  address: joi.string().optional().min(3),
+  createdAt: joi.date().optional(),
+  updatedAt: joi.date().optional(),
+  __v: joi.number().optional(),
+  cart: joi.array().optional(),
+  role: joi.string().optional(),
+});
+
+const userValidationSchema = userUpdatesValidationSchema.append({
   phone: joi.string().required().min(10),
   address: joi.string().required().min(3),
   password: joi.string().required().min(8),
-  imageUrl: joi.string().optional(),
 });
 
 const cartSchema = new mongoose.Schema({
@@ -34,7 +45,11 @@ const userSchema = new mongoose.Schema(
 
 const UserModel = mongoose.model("Users", userSchema);
 
-module.exports = { UserModel, userValidationSchema };
+module.exports = {
+  UserModel,
+  userValidationSchema,
+  userUpdatesValidationSchema,
+};
 
 UserModel.find({}).then((users) => {
   console.log("user", users[0]);

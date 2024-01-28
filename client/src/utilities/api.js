@@ -77,6 +77,26 @@ const getUsers = () => {
   });
 };
 
+const updateUsers = (userId, data) => {
+  return fetch(BASE_URL + "/users/" + userId, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: getJwtToken(),
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+const deleteUser = (userId) => {
+  return fetch(BASE_URL + "/users/" + userId, {
+    method: "DELETE",
+    headers: {
+      authorization: getJwtToken(),
+    },
+  });
+};
+
 export const api = {
   saveCart,
   checkout,
@@ -85,4 +105,6 @@ export const api = {
   editProduct,
   deleteProduct,
   getUsers,
+  updateUsers,
+  deleteUser,
 };

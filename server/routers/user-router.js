@@ -1,13 +1,52 @@
 const { Router } = require("express");
 const { upload } = require("../middlewares/multer");
-const { userValidationSchema, UserModel } = require("../models/user-model");
-const { signJwt, verifyAuth } = require("../middlewares/auth");
+const {
+  userValidationSchema,
+  UserModel,
+  userUpdatesValidationSchema,
+} = require("../models/user-model");
+const { signJwt, verifyAuth, verifyAdmin } = require("../middlewares/auth");
 
 const userRouter = Router();
 
 userRouter.get("/", async (req, res) => {
   const users = await UserModel.find({}).select("-password");
   res.send(users);
+});
+
+userRouter.put("/:userId", verifyAuth, verifyAdmin, async (req, res) => {
+  const userId = req.params.userId;
+  const updates = req.body;
+
+  const result = userUpdatesValidationSchema.validate(updates);
+  if (result.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
+  try {
+    const foundUser = await UserModel.findByIdAndUpdate(userId, updates, {
+      new: true,
+    });
+    if (!foundUser) {
+      return res.status(404).send("User not found");
+    }
+
+    res.send(foundUser);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+userRouter.delete("/:userId", verifyAuth, verifyAdmin, async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    await UserModel.findByIdAndDelete(userId);
+
+    res.send("User deleted");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 userRouter.get("/refresh", verifyAuth, async (req, res) => {
