@@ -12,7 +12,17 @@ export function Navbar({ user, setUser }) {
     <BootstrapNavbar bg="dark" data-bs-theme="dark">
       <Container>
         <BootstrapNavbar.Brand>
-          <Link to="/">Drink Stop</Link>
+          <Link to="/">
+            <img
+              src="/android-chrome-256x256.png"
+              alt="logo"
+              width={50}
+              style={{ borderRadius: "10px", marginRight: "10px" }}
+            />
+            <div className="pl-5" style={{ display: "inline-block" }}>
+              Drink Stop
+            </div>
+          </Link>
         </BootstrapNavbar.Brand>
         <Nav className="me-auto">
           <Link className="nav-link" to="/about">
@@ -57,7 +67,7 @@ export function Navbar({ user, setUser }) {
             </Link>
           )}
         </Nav>
-        <Avatar user={user} size={50} style={{}} />
+        {user && <Avatar user={user} size={50} />}
       </Container>
     </BootstrapNavbar>
   );

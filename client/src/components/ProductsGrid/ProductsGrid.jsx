@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../Button/Button";
 import "./ProductsGrid.css";
 
@@ -14,7 +15,12 @@ export const ProductsGrid = ({ products, addToCart }) => {
           <h3>{product.name}</h3>
           <p className="product-description">{product.description}</p>
           <div className="product-price">{product.price}$</div>
-          <Button onClick={() => addToCart(product._id)}>Add to cart</Button>
+          <div className="d-flex justify-content-between">
+            <Button onClick={() => addToCart(product._id)}>Add to cart</Button>
+            <Link to={`/product/${product._id}`}>
+              <Button>More info</Button>
+            </Link>
+          </div>
         </div>
       ))}
     </div>

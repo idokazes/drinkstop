@@ -188,27 +188,3 @@ export function AddEditProduct({
     </div>
   );
 }
-// name: {
-//     type: String,
-//     required: true,
-//   },
-//   price: { type: Number, required: true },
-//   image: { type: String, required: true },
-//   description: { type: String, required: true },
-//   alcoholPercentage: { type: Number, required: true },
-//   volume: { type: Number, required: true },
-//   stock: { type: Number, required: true, default: 100 },
-//   type: {
-//     type: String,
-//     required: true,
-//     enum: [
-//       "Beer",
-//       "Wine",
-//       "Whiskey",
-//       "Gin",
-//       "Vodka",
-//       "Rum",
-//       "Tequila",
-//       "Other",
-//     ],
-//   },

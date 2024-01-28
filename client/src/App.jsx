@@ -15,6 +15,8 @@ import { Orders } from "./pages/Orders/Orders";
 import { toastError } from "./utilities/toast";
 import { ManageUsers } from "./pages/ManageUsers/ManageUsers";
 import { ManageProducts } from "./pages/ManageProducts/ManageProducts";
+import { AgeModal } from "./components/AgeModal/AgeModal";
+import { Product } from "./pages/Product/Product";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -108,6 +110,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
+          <Route
+            path="/product/:id"
+            element={<Product products={products} addToCart={addToCart} />}
+          />
           {isAdmin && (
             <>
               <Route path="/manage-users" element={<ManageUsers />} />
@@ -138,6 +144,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <AgeModal />
       <ToastContainer
         position="top-right"
         autoClose={5000}
