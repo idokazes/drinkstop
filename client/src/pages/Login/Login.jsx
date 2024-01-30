@@ -14,6 +14,8 @@ export const Login = ({ setUser }) => {
     const email = formData.get("email");
     const password = formData.get("password");
 
+    if (!email || !password) return toastError("Please fill all fields.");
+
     try {
       const response = await fetch(BASE_URL + "/users/login", {
         method: "POST",
@@ -42,7 +44,7 @@ export const Login = ({ setUser }) => {
       <h1>Login</h1>
 
       <div className="center">
-        <Form className="bg-color" onSubmit={handleSubmit}>
+        <Form className="bg-color py-3" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control type="email" placeholder="Enter email" name="email" />

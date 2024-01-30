@@ -142,14 +142,12 @@ const exampleProducts = [
   },
 ];
 
-// ProductModel.insertMany(exampleProducts);
 async function start() {
-  // const greyGoose = await ProductModel.findOne({ name: "Grey Goose Vodka" });
-  // greyGoose.image =
-  //   "http://stevemody.com/wp-content/uploads/2020/05/Grey-Goose-1.png";
-  // await greyGoose.save();
-
-  await ProductModel.create(exampleProducts[1]);
+  // ProductModel.find({}).then((products) => {
+  //   products[0].stock = 1;
+  //   console.log("products[0]", products[0]);
+  //   products[0].save();
+  // });
 }
 
-// start();
+start();

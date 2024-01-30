@@ -5,18 +5,27 @@
   margin: 1rem 0;
   padding: 40px;
 
-  .total-cart {
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 33px;
+  .add-button {
+    align-self: flex-end;
+    display: flex;
+    font-size: 22px;
+    justify-content: center;
+    align-items: center;
   }
 
   .row-item {
     gap: 20px;
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+    }
   }
 
   .actions {
     width: 80%;
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
   }
 }

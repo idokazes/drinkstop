@@ -18,7 +18,8 @@
     background-attachment: fixed;
   }
 
-  h1 {
+  h1,
+  .header {
     font-family: "Bebas Neue", sans-serif;
     font-size: 24px;
     font-size: 152px;
@@ -90,5 +91,6 @@ h2,
 
   .price {
     padding: 10px 0;
+    font-weight: 700;
   }
 }

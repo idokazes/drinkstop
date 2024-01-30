@@ -7,7 +7,7 @@ export const Button = ({
   ...props
 }) => {
   return (
-    <BootstrapButton variant={variant} size={size} {...props}>
+    <BootstrapButton variant={variant} {...props}>
       {children}
     </BootstrapButton>
   );

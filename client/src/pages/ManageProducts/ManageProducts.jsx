@@ -4,6 +4,7 @@ import { Button } from "../../components/Button/Button";
 import { api } from "../../utilities/api";
 import { toastError, toastSuccess } from "../../utilities/toast";
 import "./ManageProducts.css";
+import { Pencil, PlusCircle, Trash3 } from "react-bootstrap-icons";
 
 export const ManageProducts = ({ products, categories, fetchProducts }) => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -42,8 +43,10 @@ export const ManageProducts = ({ products, categories, fetchProducts }) => {
     <div id="ManageProducts">
       <h1>Products</h1>
       <div className="actions">
-        <Button onClick={handleAdd} style={{ alignSelf: "flex-end" }}>
-          Add new product
+        <Button onClick={handleAdd} className="add-button">
+          <PlusCircle size={25} />
+          <span style={{ width: "10px", display: "inline-block" }}> </span> Add
+          new product
         </Button>
       </div>
       <br />
@@ -62,18 +65,18 @@ export const ManageProducts = ({ products, categories, fetchProducts }) => {
             <div>
               <p className="price">{product.price}$</p>
             </div>
-
-            <Button onClick={() => handleEdit(product)}>Edit</Button>
-            <Button onClick={() => handleDelete(product._id)}>Delete</Button>
+            <div className="item-actions">
+              <Button onClick={() => handleEdit(product)}>
+                <Pencil size={25} />
+              </Button>
+              <Button onClick={() => handleDelete(product._id)}>
+                <Trash3 size={25} />
+              </Button>
+            </div>
           </div>
         );
       })}
-      <div className="row-item total" style={{ display: "flex" }}>
-        <div>
-          <p className="total-cart"> Total Cart: $</p>
-        </div>
-        <Button>Checkout</Button>
-      </div>
+
       <AddEditProduct
         fetchProducts={fetchProducts}
         categories={categories}

@@ -1,0 +1,155 @@
+@media screen and (max-width: 390px) {
+  h1 {
+    font-size: 100px !important;
+  }
+
+  #home {
+    .form-switch,
+    label.main-text.form-label,
+    .view-mode {
+      display: none !important;
+    }
+  }
+
+  #about {
+    > .container {
+      width: 90%;
+    }
+  }
+
+  #Product {
+    > div > div {
+      flex-direction: column-reverse;
+    }
+
+    > .container {
+      width: 90%;
+    }
+
+    .product-description {
+      display: block;
+      padding-bottom: 20px !important;
+    }
+
+    .product-info {
+      text-align: left;
+
+      > p > span {
+        font-weight: 900;
+      }
+    }
+  }
+
+  #login {
+    form {
+      min-width: unset;
+    }
+  }
+
+  #register {
+    form {
+      min-width: unset;
+      width: 90%;
+      padding: 15px;
+    }
+  }
+
+  #Cart {
+    padding: 0;
+    .row-item {
+      flex-direction: column;
+    }
+  }
+
+  #ManageProducts {
+    padding: 0;
+    .actions {
+      justify-content: center;
+    }
+
+    .row-item {
+      gap: 5px;
+      width: 90%;
+
+      h3 {
+        font-size: 20px !important;
+      }
+      .product-details,
+      .price {
+        font-size: 16px !important;
+      }
+
+      .product-image {
+        object-fit: contain;
+        border-radius: 5px;
+        display: block;
+        max-width: 230px;
+        max-height: 95px;
+        width: auto;
+        height: auto;
+        min-width: 70px;
+      }
+
+      .item-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  }
+
+  #Orders {
+    padding: 0;
+
+    .row-item {
+      justify-content: space-between;
+      padding: 1rem 0;
+
+      h3 {
+        font-size: 20px !important;
+      }
+
+      .price {
+        font-size: 17px !important;
+      }
+
+      .product-image {
+        object-fit: contain;
+        border-radius: 5px;
+        display: block;
+        max-width: 230px;
+        max-height: 95px;
+        width: auto;
+        height: auto;
+        min-width: 70px;
+      }
+
+      .product-details > p {
+        display: none;
+      }
+    }
+  }
+
+  .modal-content {
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  #users-table {
+    th:nth-child(1),
+    .numbering,
+    td.email,
+    th.email {
+      display: none;
+    }
+
+    .actions {
+      gap: 10px;
+    }
+
+    .imageContainer {
+      height: 50px;
+      width: 50px;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { CartPlus } from "react-bootstrap-icons";
 import { Button } from "../Button/Button";
 import "./ProductsRows.css";
 
@@ -19,7 +20,9 @@ export const ProductsRows = ({ products, addToCart }) => {
           </div>
           <div>
             <p className="price">{product.price}$</p>
-            <Button onClick={() => addToCart(product._id)}>Add to cart</Button>
+            <Button onClick={() => addToCart(product._id)}>
+              Add to cart <CartPlus size={25} />
+            </Button>
           </div>
         </div>
       ))}

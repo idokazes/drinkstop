@@ -94,6 +94,7 @@ export function AddEditProduct({
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -107,6 +108,7 @@ export function AddEditProduct({
                 min={1}
                 step={0.01}
                 name="price"
+                required
               />
             </Form.Group>
 
@@ -118,6 +120,7 @@ export function AddEditProduct({
                 name="image"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -129,6 +132,7 @@ export function AddEditProduct({
                 name="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -142,6 +146,7 @@ export function AddEditProduct({
                 name="alcoholPercentage"
                 value={alcoholPercentage}
                 onChange={(e) => setAlcoholPercentage(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -154,6 +159,7 @@ export function AddEditProduct({
                 name="volume"
                 value={volume}
                 onChange={(e) => setVolume(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -166,6 +172,7 @@ export function AddEditProduct({
                 name="stock"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
+                required
               />
             </Form.Group>
 
@@ -173,6 +180,7 @@ export function AddEditProduct({
               categories={categories}
               setSelectedCategory={setSelectedCategory}
               selectedCategory={selectedCategory}
+              required
             />
           </Modal.Body>
           <Modal.Footer>

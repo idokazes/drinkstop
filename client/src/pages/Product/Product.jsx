@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import "./Product.css";
+import { CartPlus } from "react-bootstrap-icons";
 
 export const Product = ({ products, addToCart }) => {
   const { id } = useParams();
@@ -13,17 +14,31 @@ export const Product = ({ products, addToCart }) => {
   return (
     <div id="Product">
       <h1>{product.name}</h1>
-      <div className="container bg-color  pl-5" key={product.id}>
-        <div className="d-flex align-items-center justify-content-center">
-          <div className="product-details ">
+      <div className="container bg-color pl-5 py-5" key={product.id}>
+        <div
+          style={{ gap: "100px" }}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div className="product-details">
             <div className="details">
               <p className="product-description">{product.description}</p>
-              <p>Type: {product.type}</p>
-              <p>Alcohol Percentage: {product.alcoholPercentage}</p>
-              <p className="price">{product.price}$</p>
+              <div className="product-info">
+                <p>
+                  <span>Type:</span> {product.type}
+                </p>
+                <p>
+                  <span>Alcohol Percentage:</span> {product.alcoholPercentage}%
+                </p>
+                <p className="price">
+                  <span>Price:</span> {product.price}$
+                </p>
+                <p className="price">
+                  <span>Stock:</span> {product.stock}
+                </p>
+              </div>
               <br />
               <Button onClick={() => addToCart(product._id)}>
-                Add to cart
+                Add to cart <CartPlus size={25} />
               </Button>
             </div>
           </div>
@@ -31,7 +46,7 @@ export const Product = ({ products, addToCart }) => {
             className="product-image"
             src={product.image}
             alt={product.name}
-            width={400}
+            height={400}
           />
         </div>
       </div>

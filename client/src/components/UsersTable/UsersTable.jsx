@@ -5,9 +5,9 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import { api } from "../../utilities/api";
 import { toastError, toastSuccess } from "../../utilities/toast";
-import { BASE_URL } from "../../constants";
 import "./UsersTable.css";
 import { Avatar } from "../Avatar/Avatar";
+import { Pencil, Trash3 } from "react-bootstrap-icons";
 
 export function UsersTable({ fetchUsers, body }) {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -61,7 +61,11 @@ export function UsersTable({ fetchUsers, body }) {
           <tr>
             {["#", "Avatar", "Full Name", "Email", "Role", "Actions"].map(
               (header) => {
-                return <th key={header}>{header}</th>;
+                return (
+                  <th key={header} className={header.toLowerCase()}>
+                    {header}
+                  </th>
+                );
               }
             )}
           </tr>
@@ -70,17 +74,21 @@ export function UsersTable({ fetchUsers, body }) {
           {body.map((user, index) => {
             return (
               <tr key={user._id}>
-                <td>{index + 1}</td>
-                <td className="center">
-                  <Avatar user={user} />
+                <td className="numbering">{index + 1}</td>
+                <td className=" ">
+                  <Avatar user={user} className={"imageContainer"} />
                 </td>
                 <td>{user.fullName}</td>
-                <td>{user.email}</td>
+                <td className="email">{user.email}</td>
                 <td>{user.role}</td>
                 <td>
                   <div className="actions">
-                    <Button onClick={() => handleEdit(user)}>Edit</Button>{" "}
-                    <Button onClick={() => handleDelete(user)}>Delete</Button>
+                    <Button onClick={() => handleEdit(user)}>
+                      <Pencil size={25} />
+                    </Button>
+                    <Button onClick={() => handleDelete(user)}>
+                      <Trash3 size={25} />
+                    </Button>
                   </div>
                 </td>
               </tr>
@@ -113,11 +121,12 @@ export function UsersTable({ fetchUsers, body }) {
                       fullName: e.target.value,
                     }))
                   }
+                  required
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Product price</Form.Label>
+                <Form.Label>Email</Form.Label>
                 <Form.Control
                   value={editedUser.email}
                   onChange={(e) =>
@@ -130,6 +139,7 @@ export function UsersTable({ fetchUsers, body }) {
                   step={0.01}
                   name="email"
                   type="email"
+                  required
                 />
               </Form.Group>
 
@@ -157,6 +167,7 @@ export function UsersTable({ fetchUsers, body }) {
                   }))
                 }
                 value={editedUser.role}
+                required
                 name="role"
               >
                 <option value="admin">Admin</option>

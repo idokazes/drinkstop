@@ -39,7 +39,7 @@ export const About = () => {
             appreciation for the artistry behind every bottle.
           </p>
           <h2>The Drink Stop Experience</h2>
-          <p>
+          <div>
             <h3>1. Curated Selection:</h3>
             <p>
               Explore our carefully curated collection of spirits, wines, and
@@ -76,7 +76,7 @@ export const About = () => {
               beverage—it's an experience waiting to be savored. Cheers to the
               finer things in life, The Drink Stop Team
             </p>
-          </p>
+          </div>
         </div>
       </section>
     </div>

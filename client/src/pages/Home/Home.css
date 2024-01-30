@@ -16,6 +16,19 @@
   .inputs {
     display: flex;
     gap: 15px;
+    flex-wrap: wrap;
+
+    .view-mode {
+      display: flex;
+    }
+
+    .input-group {
+      display: inline;
+      max-width: 250px;
+    }
+    .form-select {
+      max-width: 250px;
+    }
   }
 
   .search {

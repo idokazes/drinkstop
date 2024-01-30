@@ -9,7 +9,7 @@ import { Avatar } from "../Avatar/Avatar";
 
 export function Navbar({ user, setUser }) {
   return (
-    <BootstrapNavbar bg="dark" data-bs-theme="dark">
+    <BootstrapNavbar bg="dark" data-bs-theme="dark" expand={"sm"}>
       <Container>
         <BootstrapNavbar.Brand>
           <Link to="/">
@@ -24,50 +24,55 @@ export function Navbar({ user, setUser }) {
             </div>
           </Link>
         </BootstrapNavbar.Brand>
-        <Nav className="me-auto">
-          <Link className="nav-link" to="/about">
-            About
-          </Link>
-          {user ? (
+        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
+        <BootstrapNavbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto w-100">
             <>
-              <Link className="nav-link" to="/profile">
-                Profile
-              </Link>
-              <Link className="nav-link" to="/orders">
-                Orders
-              </Link>
-              <Link className="nav-link" to="/cart">
-                Cart
-              </Link>
-              {user.role === "admin" && (
-                <>
-                  <Link className="nav-link" to="/manage-users">
-                    Manage Users
+              <Nav className="w-100 align-items-center">
+                <Link className="nav-link" to="/about">
+                  About
+                </Link>
+                {user ? (
+                  <>
+                    <Link className="nav-link" to="/orders">
+                      Orders
+                    </Link>
+                    <Link className="nav-link" to="/cart">
+                      Cart
+                    </Link>
+                    {user.role === "admin" && (
+                      <>
+                        <Link className="nav-link" to="/manage-users">
+                          Manage Users
+                        </Link>
+                        <Link className="nav-link" to="/manage-products">
+                          Manage Products
+                        </Link>
+                      </>
+                    )}
+                    <Link
+                      className="nav-link"
+                      to="/"
+                      onClick={() => {
+                        setUser(null);
+                        localStorage.removeItem(JWT_TOKEN_KEY);
+                        toastSuccess("Successfully logged out.");
+                      }}
+                    >
+                      Logout
+                    </Link>
+                  </>
+                ) : (
+                  <Link className="nav-link" to="/login">
+                    Login
                   </Link>
-                  <Link className="nav-link" to="/manage-products">
-                    Manage Products
-                  </Link>
-                </>
-              )}
-              <Link
-                className="nav-link"
-                to="/"
-                onClick={() => {
-                  setUser(null);
-                  localStorage.removeItem(JWT_TOKEN_KEY);
-                  toastSuccess("Successfully logged out.");
-                }}
-              >
-                Logout
-              </Link>
+                )}
+                <div className="nav-link" style={{ flex: 1 }}></div>
+                {user && <Avatar user={user} size={50} />}
+              </Nav>
             </>
-          ) : (
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
-          )}
-        </Nav>
-        {user && <Avatar user={user} size={50} />}
+          </Nav>
+        </BootstrapNavbar.Collapse>
       </Container>
     </BootstrapNavbar>
   );

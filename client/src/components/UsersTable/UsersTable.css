@@ -9,4 +9,10 @@
     align-items: center;
     gap: 20px;
   }
+
+  .imageContainer {
+    height: 80px;
+    width: 80px;
+    margin: 0 auto;
+  }
 }

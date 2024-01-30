@@ -32,6 +32,10 @@
     box-shadow: none;
     background-color: transparent;
     width: 100%;
+
+    .price-container {
+      width: 250px;
+    }
   }
 
   .total {

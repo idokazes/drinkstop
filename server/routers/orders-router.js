@@ -10,26 +10,36 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
   const cartProducts = await ProductModel.find({
     _id: { $in: req.body.map((item) => item.productId) },
   });
+  console.log("cartProducts", cartProducts);
 
   const outOfStockProducts = [];
 
   const order = {
     userId: req.user._id,
-    items: req.body.map((item) => {
-      const cartProduct = cartProducts.find(
-        (product) => product._id == item.productId
-      );
+    items: req.body
+      .map((item) => {
+        console.log("item.productId", item.productId);
+        const cartProduct = cartProducts.find((product) => {
+          console.log("product._id", product._id.toString());
+          return product._id.toString() == item.productId;
+        });
+        console.log("cartProduct", cartProduct);
 
-      if (cartProduct.stock < item.quantity) {
-        outOfStockProducts.push(cartProduct.name);
-      }
+        if (!cartProduct) {
+          return null;
+        }
 
-      return {
-        productId: item.productId,
-        quantity: item.quantity,
-        price: cartProduct.price,
-      };
-    }),
+        if (cartProduct.stock < item.quantity) {
+          outOfStockProducts.push(cartProduct.name);
+        }
+
+        return {
+          productId: item.productId,
+          quantity: item.quantity,
+          price: cartProduct.price,
+        };
+      })
+      .filter(Boolean),
   };
 
   if (outOfStockProducts.length > 0) {
@@ -48,6 +58,16 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
     const user = await UserModel.findById(req.user._id);
     user.cart = [];
     await user.save();
+
+    await ProductModel.bulkWrite(
+      order.items.map((item) => ({
+        updateOne: {
+          filter: { _id: item.productId },
+          update: { $inc: { stock: -item.quantity } },
+        },
+      }))
+    );
+
     res.send(newOrder);
   } catch (err) {
     res.status(500).send(err.message);

@@ -12,7 +12,6 @@ export const Home = ({ products, addToCart, categories }) => {
   const [isGrid, setIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  console.log("searchValue", searchValue);
 
   const filteredProducts = products.filter((product) => {
     return (
@@ -24,8 +23,12 @@ export const Home = ({ products, addToCart, categories }) => {
   return (
     <div id="home">
       <h1>Drink Stop</h1>
+      <h2 className="header">
+        Our mission is to curate a selection that reflects diversity, quality,
+        and authenticity.
+      </h2>
       <Container className="center inputs">
-        <Form style={{ display: "flex" }}>
+        <Form className="view-mode">
           <Form.Label className="main-text" style={{ paddingRight: "10px" }}>
             Grid
           </Form.Label>
@@ -37,7 +40,7 @@ export const Home = ({ products, addToCart, categories }) => {
             onChange={() => setIsGrid((current) => !current)}
           />
         </Form>
-        <InputGroup className="mb-3">
+        <InputGroup>
           <Form.Control
             className="search"
             placeholder="Search"

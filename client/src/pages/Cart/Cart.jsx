@@ -3,12 +3,19 @@ import { api } from "../../utilities/api";
 import { toastError, toastSuccess } from "../../utilities/toast";
 import "./Cart.css";
 
-export const Cart = ({ cart, products, removeFromCart, setCart }) => {
+export const Cart = ({
+  cart,
+  products,
+  removeFromCart,
+  setCart,
+  fetchProducts,
+}) => {
   const totalCart = products.length
     ? cart.reduce((acc, item) => {
         const product = products.find(
           (product) => product._id === item.productId
         );
+        if (!product) return acc;
         return acc + product.price * item.quantity;
       }, 0)
     : "loading...";
@@ -19,6 +26,7 @@ export const Cart = ({ cart, products, removeFromCart, setCart }) => {
       if (result.ok) {
         toastSuccess("Successfully checked out.");
         setCart([]);
+        fetchProducts();
       } else {
         const errorMessages = await result.text();
         throw new Error(errorMessages);
@@ -26,6 +34,8 @@ export const Cart = ({ cart, products, removeFromCart, setCart }) => {
     } catch (error) {
       console.log(error);
       toastError(error.message);
+    } finally {
+      fetchProducts();
     }
   };
 

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
-import { Home } from "./pages/Home/Home.1";
+import { Home } from "./pages/Home/Home";
 import { About } from "./pages/About/About";
 import { Footer } from "./components/Footer/Footer";
 import { Register } from "./pages/Register/Register";
@@ -12,11 +12,12 @@ import { BASE_URL, JWT_TOKEN_KEY } from "./constants";
 import { Cart } from "./pages/Cart/Cart";
 import { api } from "./utilities/api";
 import { Orders } from "./pages/Orders/Orders";
-import { toastError } from "./utilities/toast";
+import { toastError, toastSuccess } from "./utilities/toast";
 import { ManageUsers } from "./pages/ManageUsers/ManageUsers";
 import { ManageProducts } from "./pages/ManageProducts/ManageProducts";
 import { AgeModal } from "./components/AgeModal/AgeModal";
 import { Product } from "./pages/Product/Product";
+import { Profile } from "./pages/Profile/Profile";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,7 +30,9 @@ function App() {
   function fetchProducts() {
     fetch(BASE_URL + "/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data));
+      .then((data) => {
+        setProducts(data);
+      });
   }
 
   useEffect(() => {
@@ -40,26 +43,41 @@ function App() {
     if (!user) {
       return toastError("Please login to add to cart.");
     }
+    const product = products.find((product) => product._id === productId);
+    if (product.stock === 0) {
+      return toastError("This product is out of stock.");
+    }
+
     const itemInCart = cart.find((item) => item.productId === productId);
     let updatedCart;
+
+    let isNotEnoughStock = false;
     if (itemInCart) {
-      updatedCart = cart.map((item) =>
-        item.productId === productId
+      updatedCart = cart.map((item) => {
+        const newQuantity = item.quantity + 1;
+        if (newQuantity > product.stock) {
+          isNotEnoughStock = true;
+        }
+        return item.productId === productId
           ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
+          : item;
+      });
     } else {
       updatedCart = [...cart, { productId, quantity: 1 }];
     }
 
+    if (isNotEnoughStock) return toastError("Not enough stock.");
+
     api.saveCart(updatedCart);
     setCart(updatedCart);
+    toastSuccess("Added to cart.");
   };
 
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter((item) => item.productId !== productId);
     setCart(updatedCart);
     api.saveCart(updatedCart);
+    toastSuccess("Removed from cart.");
   };
 
   useEffect(() => {
@@ -110,6 +128,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
+          <Route path="/profile" element={<Profile user={user} />} />
           <Route
             path="/product/:id"
             element={<Product products={products} addToCart={addToCart} />}
@@ -138,6 +157,7 @@ function App() {
                 products={products}
                 removeFromCart={removeFromCart}
                 setCart={setCart}
+                fetchProducts={fetchProducts}
               />
             }
           />
@@ -147,7 +167,7 @@ function App() {
       <AgeModal />
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick

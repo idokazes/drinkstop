@@ -1,14 +1,15 @@
 import { BASE_URL } from "../../constants";
 import AvatarPlaceholder from "./avatar-placeholder.png";
 
-export const Avatar = ({ style, user, size = 80 }) => {
+export const Avatar = ({ style, user, size, className }) => {
+  const sizeStyle = { width: size + "px", height: size + "px" };
   return (
     <div
       style={{
-        width: size + "px",
-        height: size + "px",
+        ...sizeStyle,
         ...style,
       }}
+      className={className}
     >
       <img
         style={{
