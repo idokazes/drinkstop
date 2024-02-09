@@ -2,16 +2,18 @@ import BootstrapTable from "react-bootstrap/Table";
 import { Button } from "../Button/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { api } from "../../utilities/api";
 import { toastError, toastSuccess } from "../../utilities/toast";
 import "./UsersTable.css";
 import { Avatar } from "../Avatar/Avatar";
 import { Pencil, Trash3 } from "react-bootstrap-icons";
+import { ALLOWED_EXTENSIONS } from "../../constants";
 
 export function UsersTable({ fetchUsers, body }) {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedUser, setEditedUser] = useState(null);
+  const fileInputRef = useRef();
 
   const handleClose = () => setShowEditModal(false);
   const handleShow = () => setShowEditModal(true);
@@ -40,7 +42,25 @@ export function UsersTable({ fetchUsers, body }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await api.updateUsers(editedUser._id, editedUser);
+      const formData = new FormData();
+
+      Object.entries(editedUser).forEach(([key, value]) => {
+        if (value !== "" && key !== "cart") {
+          formData.append(key, value);
+        }
+      });
+
+      const file = fileInputRef.current.files[0];
+      if (file) {
+        const extension = file.name.split(".").pop();
+        if (!ALLOWED_EXTENSIONS.includes(extension)) {
+          toastError("File type not allowed. Please upload a png or jpg file.");
+          return;
+        }
+        formData.append("avatar", file);
+      }
+
+      const result = await api.updateUsers(editedUser._id, formData);
       if (result.ok) {
         toastSuccess("User edited successfully");
         fetchUsers();
@@ -145,18 +165,7 @@ export function UsersTable({ fetchUsers, body }) {
 
               <Form.Group className="mb-3">
                 <Form.Label>Image URL</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="http://..."
-                  name="image"
-                  value={editedUser.imageUrl}
-                  onChange={(e) =>
-                    setEditedUser((user) => ({
-                      ...user,
-                      imageUrl: e.target.value,
-                    }))
-                  }
-                />
+                <Form.Control type="file" name="image" ref={fileInputRef} />
               </Form.Group>
 
               <Form.Select

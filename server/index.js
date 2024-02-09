@@ -15,6 +15,11 @@ app.use("/public", express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.get("/", (req, res) => {
+  console.log(req.body);
+  res.send("hello world");
+});
+
 app.use("/products", productRouter);
 app.use("/users", userRouter);
 app.use("/orders", orderRouter);

@@ -81,10 +81,9 @@ const updateUsers = (userId, data) => {
   return fetch(BASE_URL + "/users/" + userId, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
       authorization: getJwtToken(),
     },
-    body: JSON.stringify(data),
+    body: data,
   });
 };
 

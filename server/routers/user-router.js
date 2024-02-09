@@ -5,6 +5,7 @@ const {
   UserModel,
   userUpdatesValidationSchema,
 } = require("../models/user-model");
+const fs = require("fs");
 const { signJwt, verifyAuth, verifyAdmin } = require("../middlewares/auth");
 
 const userRouter = Router();
@@ -14,28 +15,37 @@ userRouter.get("/", async (req, res) => {
   res.send(users);
 });
 
-userRouter.put("/:userId", verifyAuth, verifyAdmin, async (req, res) => {
-  const userId = req.params.userId;
-  const updates = req.body;
-
-  const result = userUpdatesValidationSchema.validate(updates);
-  if (result.error) {
-    return res.status(400).send(result.error.details[0].message);
-  }
-
-  try {
-    const foundUser = await UserModel.findByIdAndUpdate(userId, updates, {
-      new: true,
-    });
-    if (!foundUser) {
-      return res.status(404).send("User not found");
+userRouter.put(
+  "/:userId",
+  verifyAuth,
+  verifyAdmin,
+  upload.single("avatar"),
+  async (req, res) => {
+    const userId = req.params.userId;
+    const updates = req.body;
+    if (req.file) {
+      updates.imageUrl = req.file?.path.split("server")[1];
     }
 
-    res.send(foundUser);
-  } catch (err) {
-    res.status(500).send(err.message);
+    const result = userUpdatesValidationSchema.validate(updates);
+    if (result.error) {
+      return res.status(400).send(result.error.details[0].message);
+    }
+
+    try {
+      const foundUser = await UserModel.findByIdAndUpdate(userId, updates, {
+        new: true,
+      });
+      if (!foundUser) {
+        return res.status(404).send("User not found");
+      }
+
+      res.send(foundUser);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
   }
-});
+);
 
 userRouter.delete("/:userId", verifyAuth, verifyAdmin, async (req, res) => {
   const userId = req.params.userId;
@@ -106,14 +116,28 @@ userRouter.post("/register", upload.single("avatar"), async (req, res) => {
   if (result.error) {
     return res.status(400).send(result.error.details[0].message);
   }
-  console.log("req.file", req.file);
   try {
     const newUser = new UserModel({
       ...user,
-      imageUrl: req.file?.path.split("server")[1],
     });
 
     const savedUser = await newUser.save();
+    if (req.file) {
+      const fileNameWithoutExtension = req.file.filename.split(".")[0];
+      const imageIdName = req.file.filename.replace(
+        fileNameWithoutExtension,
+        savedUser._id
+      );
+      console.log("imageIdName", imageIdName);
+      const originalPath = req.file.path;
+      console.log("originalPath", originalPath);
+      const newPath = req.file.path.replace(req.file.filename, imageIdName);
+      console.log("newPath", newPath);
+      fs.renameSync(originalPath, newPath);
+
+      savedUser.imageUrl = newPath.split("server")[1];
+      await savedUser.save();
+    }
 
     const userData = savedUser.toObject();
     delete userData.password;

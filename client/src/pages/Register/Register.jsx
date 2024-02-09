@@ -3,10 +3,9 @@ import { Button } from "../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 import { useRef } from "react";
-import { BASE_URL, JWT_TOKEN_KEY } from "../../constants";
+import { ALLOWED_EXTENSIONS, BASE_URL, JWT_TOKEN_KEY } from "../../constants";
 import { toastError, toastSuccess } from "../../utilities/toast";
 
-const ALLOWED_EXTENSIONS = ["png", "jpeg", "jpg"];
 const MIN_FULL_NAME_LENGTH = 3;
 const MIN_EMAIL_LENGTH = 5;
 
@@ -21,8 +20,8 @@ export const Register = ({ setUser }) => {
 
     const file = fileInputRef.current.files[0];
     if (file) {
-      const extention = file.name.split(".").pop();
-      if (!ALLOWED_EXTENSIONS.includes(extention)) {
+      const extension = file.name.split(".").pop();
+      if (!ALLOWED_EXTENSIONS.includes(extension)) {
         toastError("File type not allowed. Please upload a png or jpg file.");
         return;
       }
