@@ -1,7 +1,10 @@
+import "./Footer.css";
+
 export const Footer = () => {
   return (
     <div
-      className="white-text bg-dark mt-4 py-3 d-flex justify-content-center"
+      id="footer"
+      className="white-text bg-dark py-3 d-flex justify-content-center"
       data-bs-theme="dark"
     >
       <img

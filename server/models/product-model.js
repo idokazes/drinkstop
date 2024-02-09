@@ -141,13 +141,3 @@ const exampleProducts = [
     type: "Other",
   },
 ];
-
-async function start() {
-  // ProductModel.find({}).then((products) => {
-  //   products[0].stock = 1;
-  //   console.log("products[0]", products[0]);
-  //   products[0].save();
-  // });
-}
-
-start();

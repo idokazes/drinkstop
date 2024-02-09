@@ -68,7 +68,6 @@ export const Register = ({ setUser }) => {
     }
 
     formData.append("avatar", file);
-    console.log("fileInputRef.current.files[0]", fileInputRef.current.files[0]);
 
     try {
       const response = await fetch(BASE_URL + "/users/register", {

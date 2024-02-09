@@ -54,7 +54,4 @@ module.exports = {
 UserModel.find({}).then((users) => {
   console.log("user", users[0]);
   console.log("admin", users[1]);
-
-  // users[1].role = "admin";
-  // users[1].save();
 });

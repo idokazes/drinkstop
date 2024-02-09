@@ -10,7 +10,6 @@ export const ManageUsers = ({ cart, products, removeFromCart, setCart }) => {
     const response = await api.getUsers();
     if (response.ok) {
       const users = await response.json();
-      console.log("users", users);
       setUsers(users);
     }
   };

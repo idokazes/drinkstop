@@ -9,7 +9,7 @@ import { Avatar } from "../Avatar/Avatar";
 
 export function Navbar({ user, setUser }) {
   return (
-    <BootstrapNavbar bg="dark" data-bs-theme="dark" expand={"sm"}>
+    <BootstrapNavbar bg="dark" data-bs-theme="dark" expand={"sm"} id="navbar">
       <Container>
         <BootstrapNavbar.Brand>
           <Link to="/">

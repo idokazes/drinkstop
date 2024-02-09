@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import { Navbar } from "./components/Navbar/Navbar";
 import { Home } from "./pages/Home/Home";
@@ -19,11 +19,14 @@ import { AgeModal } from "./components/AgeModal/AgeModal";
 import { Product } from "./pages/Product/Product";
 import { Profile } from "./pages/Profile/Profile";
 
+const FOUR_HOURS = 4 * 60 * 60 * 1000;
+
 function App() {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
   const categories = [...new Set(products.map((product) => product.type))];
+  const navigate = useNavigate();
 
   const isAdmin = user && user.role === "admin";
 
@@ -38,6 +41,32 @@ function App() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const handleUsageTimeout = () => {
+      if (user) {
+        setUser(null);
+        localStorage.removeItem(JWT_TOKEN_KEY);
+        navigate("/login");
+        toastError(
+          "You have been logged out due to inactivity. Please login again"
+        );
+      }
+    };
+
+    let timerId = setTimeout(handleUsageTimeout, FOUR_HOURS);
+    const handleClick = () => {
+      clearTimeout(timerId);
+      timerId = setTimeout(handleUsageTimeout, FOUR_HOURS);
+    };
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+      clearTimeout(timerId);
+    };
+  }, [user, navigate]);
 
   const addToCart = (productId) => {
     if (!user) {

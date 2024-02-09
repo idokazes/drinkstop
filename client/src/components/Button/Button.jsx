@@ -6,8 +6,12 @@ export const Button = ({
   children,
   ...props
 }) => {
+  const style = {
+    ...props.style,
+    ...(variant === "danger" && { backgroundColor: "#ce0014", color: "black" }),
+  };
   return (
-    <BootstrapButton variant={variant} {...props}>
+    <BootstrapButton variant={variant} {...props} style={style}>
       {children}
     </BootstrapButton>
   );

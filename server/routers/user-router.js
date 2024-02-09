@@ -128,11 +128,8 @@ userRouter.post("/register", upload.single("avatar"), async (req, res) => {
         fileNameWithoutExtension,
         savedUser._id
       );
-      console.log("imageIdName", imageIdName);
       const originalPath = req.file.path;
-      console.log("originalPath", originalPath);
       const newPath = req.file.path.replace(req.file.filename, imageIdName);
-      console.log("newPath", newPath);
       fs.renameSync(originalPath, newPath);
 
       savedUser.imageUrl = newPath.split("server")[1];

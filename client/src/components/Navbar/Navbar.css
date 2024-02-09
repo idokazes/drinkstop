@@ -1,3 +1,6 @@
+#navbar {
+  min-height: 5vh;
+}
 .navbar-brand a {
   font-family: "Bebas Neue", sans-serif;
   font-size: 24px;

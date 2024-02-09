@@ -10,7 +10,6 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
   const cartProducts = await ProductModel.find({
     _id: { $in: req.body.map((item) => item.productId) },
   });
-  console.log("cartProducts", cartProducts);
 
   const outOfStockProducts = [];
 
@@ -18,12 +17,9 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
     userId: req.user._id,
     items: req.body
       .map((item) => {
-        console.log("item.productId", item.productId);
         const cartProduct = cartProducts.find((product) => {
-          console.log("product._id", product._id.toString());
           return product._id.toString() == item.productId;
         });
-        console.log("cartProduct", cartProduct);
 
         if (!cartProduct) {
           return null;

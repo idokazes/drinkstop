@@ -71,7 +71,7 @@ export const Cart = ({
       })}
       <div className="row-item total" style={{ display: "flex" }}>
         <div>
-          <p className="total-cart"> Total Cart: {totalCart}$</p>
+          <p className="total-cart"> Total Cart: {totalCart.toFixed(2)}$</p>
         </div>
         <Button onClick={handleCheckout}>Checkout</Button>
       </div>

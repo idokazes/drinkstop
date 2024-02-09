@@ -6,6 +6,7 @@ const { productRouter } = require("./routers/product-router");
 const mongoose = require("mongoose");
 const { userRouter } = require("./routers/user-router");
 const { orderRouter } = require("./routers/orders-router");
+const { rateLimiter } = require("./middlewares/rate-limit");
 
 const app = express();
 
@@ -14,11 +15,7 @@ app.use(express.json());
 app.use("/public", express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-
-app.get("/", (req, res) => {
-  console.log(req.body);
-  res.send("hello world");
-});
+app.use(rateLimiter);
 
 app.use("/products", productRouter);
 app.use("/users", userRouter);
