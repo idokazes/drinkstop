@@ -11,6 +11,9 @@ export const Product = ({ products, addToCart }) => {
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  const isOutOfStock = product.stock === 0;
+
   return (
     <div id="Product">
       <h1>{product.name}</h1>
@@ -37,8 +40,12 @@ export const Product = ({ products, addToCart }) => {
                 </p>
               </div>
               <br />
-              <Button onClick={() => addToCart(product._id)}>
-                Add to cart <CartPlus size={25} />
+              <Button
+                onClick={() => addToCart(product._id)}
+                variant={isOutOfStock ? "danger" : undefined}
+              >
+                {isOutOfStock ? "Out of stock" : "Add to cart"}{" "}
+                <CartPlus size={25} />
               </Button>
             </div>
           </div>

@@ -66,6 +66,9 @@ export const Login = ({ setUser }) => {
           <br />
           <br />
           <Link to="/register">Don't have an account? Register here</Link>
+          <br />
+          <br />
+          <Link to="/forgot-password">Forgot your password? click here</Link>
         </Form>
       </div>
     </div>

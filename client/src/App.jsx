@@ -18,6 +18,8 @@ import { ManageProducts } from "./pages/ManageProducts/ManageProducts";
 import { AgeModal } from "./components/AgeModal/AgeModal";
 import { Product } from "./pages/Product/Product";
 import { Profile } from "./pages/Profile/Profile";
+import { ManageOrders } from "./pages/ManageOrders/ManageOrders";
+import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword";
 
 const FOUR_HOURS = 4 * 60 * 60 * 1000;
 
@@ -157,7 +159,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
-          <Route path="/profile" element={<Profile user={user} />} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword setUser={setUser} />}
+          />
+          <Route
+            path="/profile"
+            element={<Profile user={user} setUser={setUser} />}
+          />
           <Route
             path="/product/:id"
             element={<Product products={products} addToCart={addToCart} />}
@@ -165,6 +174,10 @@ function App() {
           {isAdmin && (
             <>
               <Route path="/manage-users" element={<ManageUsers />} />
+              <Route
+                path="/manage-orders"
+                element={<ManageOrders products={products} />}
+              />
               <Route
                 path="/manage-products"
                 element={

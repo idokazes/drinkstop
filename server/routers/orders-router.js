@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { orderValidationSchema, OrderModel } = require("../models/order-model");
-const { verifyAuth } = require("../middlewares/auth");
+const { verifyAuth, verifyAdmin } = require("../middlewares/auth");
 const { ProductModel } = require("../models/product-model");
 const { UserModel } = require("../models/user-model");
 
@@ -73,6 +73,23 @@ orderRouter.post("/", verifyAuth, async (req, res) => {
 orderRouter.get("/", verifyAuth, async (req, res) => {
   try {
     const orders = await OrderModel.find({ userId: req.user._id });
+    res.send(orders);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+orderRouter.get("/all", verifyAuth, verifyAdmin, async (req, res) => {
+  try {
+    const orders = await OrderModel.find()
+      .populate({
+        path: "userId",
+        select: "fullName imageUrl",
+      })
+      .populate({
+        path: "items.productId",
+        select: "name",
+      });
     res.send(orders);
   } catch (err) {
     res.status(500).send(err.message);

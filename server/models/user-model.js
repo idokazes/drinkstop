@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
 
+const password = joi.string().required().min(8);
+
 const userUpdatesValidationSchema = joi.object({
   fullName: joi.string().optional().min(3),
   email: joi.string().email().optional().min(5),
@@ -13,12 +15,13 @@ const userUpdatesValidationSchema = joi.object({
   __v: joi.number().optional(),
   cart: joi.array().optional(),
   role: joi.string().optional(),
+  password,
 });
 
 const userValidationSchema = userUpdatesValidationSchema.append({
   phone: joi.string().required().min(10),
   address: joi.string().required().min(3),
-  password: joi.string().required().min(8),
+  password,
 });
 
 const cartSchema = new mongoose.Schema({

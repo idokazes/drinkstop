@@ -4,8 +4,6 @@
   flex-direction: column;
   background-color: #000;
 
-  min-height: 100vh;
-
   main {
     min-height: 100%;
     padding-top: 20px;

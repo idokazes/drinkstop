@@ -48,6 +48,9 @@ export function Navbar({ user, setUser }) {
                         <Link className="nav-link" to="/manage-products">
                           Manage Products
                         </Link>
+                        <Link className="nav-link" to="/manage-orders">
+                          Manage Orders
+                        </Link>
                       </>
                     )}
                     <Link
@@ -68,7 +71,9 @@ export function Navbar({ user, setUser }) {
                   </Link>
                 )}
                 <div className="nav-link" style={{ flex: 1 }}></div>
-                {user && <Avatar user={user} size={50} />}
+                <Link className="nav-link" to="/profile">
+                  {user && <Avatar user={user} size={50} />}
+                </Link>
               </Nav>
             </>
           </Nav>

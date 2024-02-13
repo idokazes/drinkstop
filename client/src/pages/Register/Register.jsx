@@ -3,11 +3,16 @@ import { Button } from "../../components/Button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 import { useRef } from "react";
-import { ALLOWED_EXTENSIONS, BASE_URL, JWT_TOKEN_KEY } from "../../constants";
+import { BASE_URL, JWT_TOKEN_KEY, MIN_FULL_NAME_LENGTH } from "../../constants";
 import { toastError, toastSuccess } from "../../utilities/toast";
-
-const MIN_FULL_NAME_LENGTH = 3;
-const MIN_EMAIL_LENGTH = 5;
+import {
+  validateAddress,
+  validateEmail,
+  validateFile,
+  validateFullName,
+  validatePassword,
+  validatePhone,
+} from "../../utilities/validations";
 
 export const Register = ({ setUser }) => {
   const navigate = useNavigate();
@@ -20,51 +25,41 @@ export const Register = ({ setUser }) => {
 
     const file = fileInputRef.current.files[0];
     if (file) {
-      const extension = file.name.split(".").pop();
-      if (!ALLOWED_EXTENSIONS.includes(extension)) {
-        toastError("File type not allowed. Please upload a png or jpg file.");
-        return;
+      const error = validateFile(file);
+      if (error) {
+        return toastError(error);
       }
     }
 
-    if (formData.get("fullName").length < MIN_FULL_NAME_LENGTH) {
+    const fullNameError = validateFullName(formData.get("fullName"));
+    if (fullNameError) {
       return toastError(
         `Full name must be at least ${MIN_FULL_NAME_LENGTH} characters long.`
       );
     }
 
     const email = formData.get("email");
-    if (email.length < MIN_EMAIL_LENGTH) {
-      return toastError(
-        `Email must be at least ${MIN_EMAIL_LENGTH} characters long.`
-      );
+    const emailError = validateEmail(email);
+    if (emailError) {
+      return toastError(emailError);
     }
 
-    if (email.indexOf("@") === -1) {
-      return toastError("Email must contain @.");
+    const phone = formData.get("phone");
+    const phoneError = validatePhone(phone);
+    if (phoneError) {
+      return toastError(phoneError);
     }
 
-    if (email.indexOf(".") === -1) {
-      return toastError(`Email must contain "."`);
-    }
-
-    if (formData.get("phone").length < 10) {
-      return toastError("Phone number must be at least 10 characters long.");
-    }
-
-    if (formData.get("address").length < 3) {
-      return toastError("Address must be at least 3 characters long.");
+    const address = formData.get("address");
+    const addressError = validateAddress(address);
+    if (addressError) {
+      return toastError(addressError);
     }
 
     const password = formData.get("password");
-    const regex = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d.*\\d.*\\d.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
-    );
-
-    if (!regex.test(password)) {
-      return toastError(
-        "Password must contain at least 8 characters, one uppercase, one lowercase, at least 4 digits and one special case character"
-      );
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      return toastError(passwordError);
     }
 
     formData.append("avatar", file);

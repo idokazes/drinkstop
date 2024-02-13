@@ -38,6 +38,14 @@ const getOrders = () => {
   }).then((res) => res.json());
 };
 
+const getAllOrders = () => {
+  return fetch(BASE_URL + "/orders/all", {
+    headers: {
+      authorization: getJwtToken(),
+    },
+  }).then((res) => res.json());
+};
+
 const addProduct = (product) => {
   return fetch(BASE_URL + "/products", {
     method: "POST",
@@ -106,4 +114,5 @@ export const api = {
   getUsers,
   updateUsers,
   deleteUser,
+  getAllOrders,
 };

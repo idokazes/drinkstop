@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const verifyAuth = (req, res, next) => {
   const token = req.header("authorization");
   if (!token) {
-    return res.status(401).send("Access Denied");
+    return res.status(401).send("Access Denied (missing token)");
   }
 
   try {
@@ -23,8 +23,18 @@ const verifyAdmin = (req, res, next) => {
   next();
 };
 
+const verifyAdminOrUser = (req, res, next) => {
+  console.log("req.user.role", req.user.role);
+  console.log("req.user._id", req.user._id);
+  console.log("req.params.userId", req.params.userId);
+  if (req.user.role === "admin" || req.user._id === req.params.userId) {
+    return next();
+  }
+  return res.status(401).send("Access Denied");
+};
+
 const signJwt = (payload) => {
   return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: "4h" });
 };
 
-module.exports = { verifyAuth, signJwt, verifyAdmin };
+module.exports = { verifyAuth, signJwt, verifyAdmin, verifyAdminOrUser };
