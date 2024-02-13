@@ -15,7 +15,7 @@ const userUpdatesValidationSchema = joi.object({
   __v: joi.number().optional(),
   cart: joi.array().optional(),
   role: joi.string().optional(),
-  password,
+  password: joi.string().optional().min(8),
 });
 
 const userValidationSchema = userUpdatesValidationSchema.append({
